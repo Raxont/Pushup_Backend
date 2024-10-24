@@ -1,0 +1,28 @@
+[
+  {
+    "_id": {
+      "$oid": "6709526e100ec33685ed6799"
+    },
+    "usuario_fk": {
+      "$oid": "670951c4100ec33685ed6793"
+    },
+    "fecha_de_la_estadística": {
+      "$date": "2024-01-10T10:00:00.000Z"
+    },
+    "actividades_completadas": 1,
+    "objetivos_completados": 0
+  },
+  {
+    "_id": {
+      "$oid": "6709526e100ec33685ed679a"
+    },
+    "usuario_fk": {
+      "$oid": "670951c4100ec33685ed6794"
+    },
+    "fecha_de_la_estadística": {
+      "$date": "2024-01-10T10:00:00.000Z"
+    },
+    "actividades_completadas": 0,
+    "objetivos_completados": 0
+  }
+]

@@ -1,0 +1,36 @@
+[
+  {
+    "_id": {
+      "$oid": "670953f1100ec33685ed67a0"
+    },
+    "usuario_fk": {
+      "$oid": "670951c4100ec33685ed6793"
+    },
+    "title": "Aprender JavaScript",
+    "description": "Completar un curso de JavaScript.",
+    "fecha_de_vencimiento": {
+      "$date": "2024-03-01T00:00:00.000Z"
+    },
+    "estado": "activo",
+    "fecha_de_creacion": {
+      "$date": "2024-01-07T11:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "670953f1100ec33685ed67a1"
+    },
+    "usuario_fk": {
+      "$oid": "670951c4100ec33685ed6793"
+    },
+    "title": "Ejercitarse regularmente",
+    "description": "Ir al gimnasio 3 veces por semana.",
+    "fecha_de_vencimiento": {
+      "$date": "2024-02-01T00:00:00.000Z"
+    },
+    "estado": "pendiente",
+    "fecha_de_creacion": {
+      "$date": "2024-01-08T12:00:00.000Z"
+    }
+  }
+]

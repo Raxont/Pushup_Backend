@@ -1,0 +1,28 @@
+[
+  {
+    "_id": {
+      "$oid": "670954a1100ec33685ed67a4"
+    },
+    "objetivo_fk": {
+      "$oid": "670953f1100ec33685ed67a0"
+    },
+    "descripcion": "Completar el módulo 1.",
+    "fecha_de_creacion": {
+      "$date": "2024-01-07T11:00:00.000Z"
+    },
+    "completado": false
+  },
+  {
+    "_id": {
+      "$oid": "670954a1100ec33685ed67a5"
+    },
+    "objetivo_fk": {
+      "$oid": "670953f1100ec33685ed67a1"
+    },
+    "descripcion": "Ir al gimnasio el lunes.",
+    "fecha_de_creacion": {
+      "$date": "2024-01-08T12:00:00.000Z"
+    },
+    "completado": false
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "_id": {
+      "$oid": "6709552e100ec33685ed67aa"
+    },
+    "nombre": "Trabajo"
+  },
+  {
+    "_id": {
+      "$oid": "6709552e100ec33685ed67ab"
+    },
+    "nombre": "Estudio"
+  },
+  {
+    "_id": {
+      "$oid": "6709552e100ec33685ed67ac"
+    },
+    "nombre": "Personal"
+  }
+]

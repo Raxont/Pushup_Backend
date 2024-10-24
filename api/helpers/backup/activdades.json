@@ -1,0 +1,38 @@
+[
+  {
+    "_id": {
+      "$oid": "670955b3100ec33685ed67ae"
+    },
+    "usuario_fk": {
+      "$oid": "670951c4100ec33685ed6793"
+    },
+    "titulo": "Hacer la compra",
+    "descripcion": "Comprar alimentos y productos de limpieza.",
+    "estado": "pendiente",
+    "prioridad": "alta",
+    "fecha_de_creacion": {
+      "$date": "2024-01-05T09:00:00.000Z"
+    },
+    "fecha_de_actualizacion": {
+      "$date": "2024-01-05T09:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "670955b3100ec33685ed67af"
+    },
+    "usuario_fk": {
+      "$oid": "670951c4100ec33685ed6794"
+    },
+    "titulo": "Estudiar para el examen",
+    "descripcion": "Repasar los temas del último módulo.",
+    "estado": "en proceso",
+    "prioridad": "media",
+    "fecha_de_creacion": {
+      "$date": "2024-01-06T10:00:00.000Z"
+    },
+    "fecha_de_actualizacion": {
+      "$date": "2024-01-06T10:00:00.000Z"
+    }
+  }
+]

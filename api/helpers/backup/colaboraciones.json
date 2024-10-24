@@ -1,0 +1,14 @@
+[
+  {
+    "_id": {
+      "$oid": "67095761100ec33685ed67ba"
+    },
+    "actividad_fk": {
+      "$oid": "670955b3100ec33685ed67af"
+    },
+    "usuario_fk": {
+      "$oid": "670951c4100ec33685ed6795"
+    },
+    "rol": "colaborador"
+  }
+]
