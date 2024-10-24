@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "node --watch ./api/server.cjs",
-    "import":"node api/helpers/backup/import.cjs"
+    "import": "node api/helpers/backup/import.cjs"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -21,7 +21,9 @@
     "morgan": "1.10.0",
     "node-fetch": "^3.3.2",
     "passport": "^0.7.0",
-    "passport-google-oauth20": "^2.0.0"
+    "passport-google-oauth20": "^2.0.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
@@ -34,7 +36,6 @@
     "express-rate-limit": "^7.4.0",
     "express-session": "^1.18.0",
     "express-validator": "^7.2.0",
-    "globals": "^15.9.0",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.8.0"
   }
