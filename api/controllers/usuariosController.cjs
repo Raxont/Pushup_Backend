@@ -24,13 +24,22 @@ class UserController {
     try {
       const users = await this.userModel.getAllUsers();
       if (!users) {
-        return res.status(404).json({ message: "Users not found" });
+        return res.status(404).json({
+          status: 404,
+          message: "No se encontro ningun usuario"
+        });
       }
 
-      res.status(200).json(users);
+      res.status(200).json({
+        status: 200,
+        message: "Usuarios obtenidos correctamente",
+        data: users
+      });
     } catch (error) {
-      const errorObj = JSON.parse(error.message);
-      res.status(errorObj.status).json({ message: errorObj.message });
+      res.status(500).json({
+        status: 500,
+        message: "Error en la obtencion de usuarios"
+      });
     }
   }
 
@@ -44,34 +53,29 @@ class UserController {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty())
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({
+          status: 400,
+          message: "Error en la validacion del callback de google"
+        });
 
       const user = await this.userModel.getUserById(req.params.id);
       if (!user) {
-        return res.status(404).json({ message: "User not found" });
+        return res.status(404).json({
+          status: 404,
+          message: "Usuario no encontrado"
+        });
       }
 
-      res.status(200).json(user);
+      res.status(200).json({
+        status: 200,
+        message: "Usuario encontrado",
+        data: user
+      });
     } catch (error) {
-      const errorObj = JSON.parse(error.message);
-      res.status(errorObj.status).json({ message: errorObj.message });
-    }
-  }
-
-  /**
-   * Busca un usuario por su ID.
-   * @param {string} userId - El ID del usuario a buscar.
-   * @returns {Promise<Object|null>} - Devuelve el usuario encontrado o null si no existe.
-   */
-  async findUserById(userId) {
-    try {
-      const user = await this.userModel.getUserById(userId);
-      if (!user) {
-        return null; // No se encontró el usuario
-      }
-      return user; // Retorna el usuario encontrado
-    } catch (error) {
-      throw new Error("Error al obtener el usuario"); // Manejo de errores
+      res.status(500).json({
+        status: 500,
+        message: "Error en obtener el usuario"
+      });
     }
   }
 
@@ -83,43 +87,54 @@ class UserController {
    */
   async createUser(req, res) {
     try {
+      const { nombre, contrasena_hash, email } = req.body;
+      if (!nombre || !contrasena_hash || !email) {
+        return res.status(400).json({
+          status: 400,
+          message: "Debe ingresar el nombre, la contraseña y el correo"
+        });
+      }
       // Validar los datos del request
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({
+          status: 400,
+          message: "Error en la validacion de la creacion del usuario"
+        });
       }
       // Verificar si el nombre ya existe en la base de datos
-      const existingUserNombre = await this.userModel.findByNick(
-        req.body.nombre
-      );
+      const existingUserNombre = await this.userModel.findByNick(nombre);
       if (existingUserNombre) {
-        // Devolver el error en el formato esperado por el frontend
         return res.status(400).json({
-          errors: [{ path: "nombre", msg: "El nombre ya esta en uso" }],
+          status: 400,
+          message: "El nombre ya existe en la base de datos"
         });
       }
       // Verificar si el email ya existe en la base de datos
-      const existingUserEmail = await this.userModel.findByEmail(
-        req.body.correo
-      );
+      const existingUserEmail = await this.userModel.findByEmail(email);
       if (existingUserEmail) {
-        // Devolver el error en el formato esperado por el frontend
         return res.status(400).json({
-          errors: [{ path: "correo", msg: "El correo ya esta en uso" }],
+          status: 400,
+          message: "El email ya existe en la base de datos"
         });
       }
-
+      req.body.fecha_de_creacion= new Date();
+      req.body.id = Math.floor(1000000000 + Math.random() * 9000000000).toString();
       // Hashear la contraseña antes de guardar al usuario
-      req.body.password = await bcrypt.hash(req.body.password, 10);
-
+      req.body.contrasena_hash = await bcrypt.hash(contrasena_hash, 10);
+      const user = req.body;
       // Crear el nuevo usuario
-      const user = await this.userModel.insert(req.body);
-      res.status(201).json(user);
+      await this.userModel.insert(req.body);
+      res.status(201).json({
+        status: 201,
+        message: "Usuario creado correctamente",
+        data: user
+      });
     } catch (error) {
-      console.error(error);
-      res
-        .status(500)
-        .json({ errors: [{ path: "general", msg: "Internal server error" }] });
+      res.status(500).json({
+        status: 500,
+        message: "Error en registro del usuario"
+      });
     }
   }
 
@@ -133,34 +148,28 @@ class UserController {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty())
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({
+          status: 400,
+          message: "Error en la validacion de actualizar el usuario"
+        });
 
-      const user = await this.userModel.updateUserForm(req.params.id, req.body);
+      const user = await this.userModel.findByIdAndUpdateForm(req.params.id, req.body);
       if (!user) {
-        return res.status(404).json({ message: "User not found" });
+        return res.status(404).json({
+        status: 404,
+        message: "Usuario no encontrado"
+      });
       }
-      res.status(200).json(user);
+      res.status(200).json({
+        status: 200,
+        message: "Usuario actualizado correctamente",
+        data: user
+      });
     } catch (error) {
-      const errorObj = JSON.parse(error.message);
-      res.status(errorObj.status).json({ message: errorObj.message });
-    }
-  }
-
-  /**
-   * Actualiza un usuario por su ID y datos proporcionados.
-   * @param {string} userId - El ID del usuario a actualizar.
-   * @param {Object} updatedData - Los nuevos datos del usuario.
-   * @returns {Promise<Object|null>} - Devuelve el usuario actualizado o null si no se encontró.
-   */
-  async updateUserById(userId, updatedData) {
-    try {
-      const user = await this.userModel.updateUserForm(userId, updatedData);
-      if (!user) {
-        return null; // Retorna null si no encuentra el usuario
-      }
-      return user; // Retorna el usuario actualizado
-    } catch (error) {
-      throw new Error("Error al actualizar el usuario"); // Lanza un error para que lo maneje el llamador
+      res.status(500).json({
+        status: 500,
+        message: "Error en la actualizacion del usuario"
+      });
     }
   }
 
@@ -174,31 +183,28 @@ class UserController {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty())
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({
+          status: 400,
+          message: "Error en la validacion de eliminar el usuario"
+        });
 
       const user = await this.userModel.deleteUser(req.params.id);
       if (!user) {
-        return res.status(404).json({ message: "User not found" });
+        return res.status(404).json({
+          status: 404,
+          message: "Usuario no encontrado"
+        });
       }
-      res.status(200).json(user);
+      res.status(200).json({
+        status: 200,
+        message: "Usuario eliminado correctamente",
+        data: user
+      });
     } catch (error) {
-      const errorObj = JSON.parse(error.message);
-      res.status(errorObj.status).json({ message: errorObj.message });
-    }
-  }
-
-  /**
-   * Busca usuarios por su nombre.
-   * @param {Object} req - La solicitud HTTP.
-   * @param {Object} res - La respuesta HTTP.
-   * @returns {Promise<void>}
-   */
-  async searchUsers(req, res) {
-    try {
-      const users = await this.userModel.searchUsersByName(req.query.name);
-      res.json(users);
-    } catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({
+        status: 500,
+        message: "Error en la eliminacion del usuario"
+      });
     }
   }
   
@@ -292,30 +298,43 @@ class UserController {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty())
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({
+          status: 400,
+          message: "Error en la validacion del login"
+        });
 
       const usuario = await this.userModel.findByNick(req.body.nombre);
       if (
         !usuario ||
-        !(await bcrypt.compare(req.body.password, usuario.password))
+        !(await bcrypt.compare(req.body.contrasena_hash, usuario.contrasena_hash))
       ) {
-        return res.status(400).json({ message: "Invalid nick or password" });
+        return res.status(400).json({
+          status: 400,
+          message: "Nombre o clave incorrectos"
+        });
       }
 
       const userData = {
         id: usuario.id,
         nombre: usuario.nombre,
-        correo: usuario.correo,
+        email: usuario.email,
       };
       const token = jwtUtils.generateToken(userData);
       const user = usuario.id;
       req.session.passport = { user: user };
       req.session.token = token;
 
-      res.status(200).json({ token, userData });
+      res.json({
+        status: 200,
+        message: "Usuario autenticado con éxito",
+        data: { token, userData }
+      });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Internal server error" });
+      res.status(500).json({
+        status: 500,
+        message: "Error en el logueo"
+      });
     }
   }
 }
