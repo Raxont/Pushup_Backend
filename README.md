@@ -95,9 +95,6 @@ GOOGLE_CLIENT_SECRET
 │   │   server.cjs
 │   │   
 │   ├───controllers
-│   │       paymentsController.cjs
-│   │       productsController.cjs
-│   │       requestsController.cjs
 │   │       usuariosController.cjs
 │   │       
 │   ├───helpers
@@ -129,15 +126,9 @@ GOOGLE_CLIENT_SECRET
 │   │               swagger.cjs
 │   │               
 │   ├───models
-│   │       pagosModel.cjs
-│   │       pedidosModel.cjs
-│   │       productosModel.cjs
 │   │       usuariosModel.cjs
 │   │       
 │   ├───routes
-│   │       paymentsRoutes.cjs
-│   │       productsRoutes.cjs
-│   │       requestsRoutes.cjs
 │   │       usuariosRoutes.cjs
 │   │       
 │   └───utils
