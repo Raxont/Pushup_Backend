@@ -3,7 +3,6 @@ const express = require("express");
 const passport = require("passport");
 const http = require("http");
 
-const corsConfig = require("./infrastructure/middlewares/server/corsConfig.cjs");
 const sessionConfig = require("./infrastructure/middlewares/server/sessionConfig.cjs");
 const { swaggerUi, swaggerDocs } = require("./infrastructure/middlewares/server/swagger.cjs");
 const usuariosRoutes = require("./routes/usuariosRoutes.cjs");
@@ -18,7 +17,6 @@ const createServer = () => {
   const app = express();
   
   // Middlewares
-  app.use(corsConfig);
   app.use(express.json());
   app.use(sessionConfig);
   app.use(jsonParseErrorHandler);
@@ -29,7 +27,6 @@ const createServer = () => {
   app.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
   app.use("/usuarios", usuariosRoutes);
-
 
   const server = http.createServer(app);
 

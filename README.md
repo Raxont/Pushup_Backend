@@ -125,7 +125,6 @@ GOOGLE_CLIENT_SECRET
 │   │       │   rateLimit.cjs
 │   │       │   
 │   │       └───server
-│   │               corsConfig.cjs
 │   │               sessionConfig.cjs
 │   │               swagger.cjs
 │   │               
