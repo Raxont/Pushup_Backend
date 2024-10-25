@@ -1,6 +1,8 @@
 # Pushup_Backend
 
+Este proyecto es una aplicacion para actividades diarias que tiene como objetivo crear una herramienta eficiente y flexible que permita a los usuarios organizar, registrar, y seguir su progreso en diversas actividades cotidianas. Esto servirá como un sistema de gestión de tareas que incluye funcionalidades clave como el seguimiento de hábitos, establecimiento de metas, y generación de reportes de productividad. El enfoque principal es proporcionar a los usuarios una plataforma que les ayude a gestionar tanto sus tareas personales como profesionales, mejorando su organización y permitiendo un control detallado sobre su tiempo y prioridades.
 
+Es necesario tener instalado mongoDB, mongo shell, las herramientas de mongoDB y usar Node,js con la version '23.0.0:
 
 MongoDB:
 
@@ -20,35 +22,47 @@ Herramientas de mongoDB:
 https://www.mongodb.com/try/download/database-tools
 ```
 
+Usar la version **23.0.0** de Node.js:
+
+```bash
+nvm install 23.0.0
+nvm use 23.0.0
+```
+
+## Tecnologías usadas
+
+**Server:** Node.js, Express.js, MongoDB, Passportjs, Swagger, Bcryptjs, Jsonwebtoken, 
+
 ## Instalación
 
 Clona mi repositorio, instala mi proyecto con npm
 
 ```bash
-  git clone https://github.com/Raxont/template_examen.git
-  npm i
+git clone https://github.com/Raxont/Pushup_Backend.git
+npm i
 ```
 
 Importar la base de datos del backup:
 
-```javascript
-npm run import
+```bash
+node --run import
 ```
 
 ## Ejecución
 
-Para ejecutar el codigo usa npm run
+Para ejecutar el codigo usa el siguiente comando:
 
 ```bash
-  npm run dev
-  npm run start
+node --run dev
 ```
 
 ## Variables de entorno
 
+Crea un archivo .env en el archivo principal del proyecto y usa estas variables de entorno
+
 ```javascript
-SECRET_JWT_KEY
-NODE_ENV
+SECRET_JWT_KEY = "Everything you want to put here"
+NODE_ENV="false"
 
 VITE_HTTP_BACKEND
 VITE_HTTP_FRONTEND
@@ -62,223 +76,88 @@ VITE_MONGO_USER
 VITE_MONGO_PWD
 VITE_MONGO_HOST
 VITE_MONGO_PORT
-VITE_MONGO_DB_NAME=
-
-GITHUB_CLIENT_ID
-GITHUB_CLIENT_SECRET
+VITE_MONGO_DB_NAME
 
 GOOGLE_CLIENT_ID
 GOOGLE_CLIENT_SECRET
-
-DISCORD_CLIENT_ID
-DISCORD_CLIENT_SECRET
 ```
-
-
 
 ## Estructura de carpetas
 
 ```bash
+│   .env
 │   .gitignore
-│   astro.config.mjs
-│   estructura_proyecto.txt
+│   app.cjs
 │   package.json
 │   README.md
-│   tailwind.config.mjs
-│   tsconfig.json
+│   
 ├───api
-│   │   server.cjs  
+│   │   server.cjs
+│   │   
 │   ├───controllers
 │   │       paymentsController.cjs
 │   │       productsController.cjs
 │   │       requestsController.cjs
 │   │       usuariosController.cjs
-│   ├───dto
-│   ├───fotosPerfil     
+│   │       
+│   ├───helpers
+│   │   └───backup
+│   │           activdades.json
+│   │           categorias.json
+│   │           colaboraciones.json
+│   │           estadisticas.json
+│   │           etiquetas.json
+│   │           hitos.json
+│   │           import.cjs
+│   │           objetivos.json
+│   │           recordatorios.json
+│   │           reportes.json
+│   │           usuarios.json
+│   │           
 │   ├───infrastructure
 │   │   ├───database
 │   │   │       mongodb.cjs
+│   │   │       
 │   │   └───middlewares
 │   │       │   authMiddleware.cjs
 │   │       │   errorHandling.cjs
 │   │       │   googleAuth.cjs
-│   │       │   rateLimit.cjs 
+│   │       │   rateLimit.cjs
+│   │       │   
 │   │       └───server
 │   │               corsConfig.cjs
-│   │               sessionConfig.cjs      
-│   ├───model
+│   │               sessionConfig.cjs
+│   │               swagger.cjs
+│   │               
 │   ├───models
 │   │       pagosModel.cjs
 │   │       pedidosModel.cjs
 │   │       productosModel.cjs
 │   │       usuariosModel.cjs
+│   │       
 │   ├───routes
 │   │       paymentsRoutes.cjs
 │   │       productsRoutes.cjs
 │   │       requestsRoutes.cjs
-│   │       usuariosRoutes.cjs  
-│   ├───utils
-│   │       jwtUtils.cjs 
-│   └───validator
-│           usuariosValidator.cjs 
-└───src
-    │   env.d.ts
-    ├───components
-    │       home.jsx
-    │       login.jsx
-    │       logout.jsx
-    │       prductForm.jsx
-    │       productDisplay.jsx
-    │       register.jsx
-    │       searchBar.jsx
-    │       sessionChecker.jsx  
-    ├───layouts
-    │       HomeLayout.astro
-    │       Layout.astro  
-    ├───pages
-    │       home.astro
-    │       index.astro
-    │       login.astro
-    │       register.astro
-    └───styles
-            global.css
+│   │       usuariosRoutes.cjs
+│   │       
+│   └───utils
+│           jwtUtils.cjs
 ```
 
+## Endpoints
 
+Si desea probar los endpoints con swagger usar la URL que se muestra al iniciar mi proyecto y tiene como nombre Documentación Swagger, ejemplo:
 
-# Explicación de los Endpoints
+```web-idl
+http://localhost:3001/api
+```
 
-## **Usuarios**
+O puede usarlo con otra api rest client de su preferencia con la URL que tiene como nombre Server corriendo, ejemplo:
 
-### 1. Obtener todos los usuarios
-
-- **Método**: `GET`
-- **URL**: `/v2/users/`
-- **Descripción**: Recupera una lista de todos los usuarios registrados en el sistema. Este endpoint puede paginar los resultados si se implementa la funcionalidad.
-
-### 2. Obtener un usuario por ID
-
-- **Método**: `GET`
-- **URL**: `/v2/users/:id`
-- **Descripción**: Obtiene los detalles de un usuario específico utilizando su ID único.
-- **Parámetros**:
-  - `id`: ID del usuario a recuperar.
-
-### 3. Crear un nuevo usuario
-
-- **Método**: `POST`
-
-- **URL**: `/v2/users`
-
-- **Descripción**: Crea un nuevo usuario en el sistema. Se espera que el cuerpo de la solicitud contenga los datos necesarios como nombre, correo electrónico, contraseña, etc.
-
-- **Cuerpo de la solicitud**:
-
-  - Ejemplo:
-
-    ```json
-    {
-      "id": "1234567890",
-      "nombre": "camilo",
-      "correo": "camilo@gmail.com",
-      "password": "1234",
-      "fotoPerfil": "camilo.jpg",
-      "favoritos": [],
-      "carritoCompras": []
-    }
-    ```
-
-### 4. Actualizar un usuario
-
-- **Método**: `PUT`
-
-- **URL**: `/v2/users/:id`
-
-- **Descripción**: Actualiza la información de un usuario existente. Los datos a actualizar se pasan en el cuerpo de la solicitud.
-
-- **Parámetros**:
-
-  - `id`: ID del usuario a actualizar.
-
-- **Cuerpo de la solicitud**:
-
-  - Ejemplo:
-
-    ```json
-    {
-      "nombre": "camilos"
-    }
-    ```
-
-### 5. Eliminar un usuario
-
-- **Método**: `DELETE`
-- **URL**: `/v2/users/:id`
-- **Descripción**: Elimina un usuario del sistema usando su ID único.
-- **Parámetros**:
-  - `id`: _id del usuario a eliminar.
-
-### 8. Actualiza la foto de perfil
-
-- **Método**: `GET`
-- **URL**: `/v2/users/upload-profile-picture`
-- **Descripción**: Obtiene el archivo por la req.files y actualiza en la base de datos la foto y en el archivo de fotosPerfil del servidor.
-
-## **Autenticación**
-
-### 1. Iniciar sesión con Google
-
-- **Método**: `GET`
-- **URL**: `/v2/users/google`
-- **Descripción**: Redirige al usuario a google para autenticarse. Una vez autenticado, el usuario será redirigido de vuelta al sitio con un token de sesión.
-
-### 2. Iniciar sesión con cuenta local
-
-- **Método**: `POST`
-
-- **URL**: `/v2/users/loginAccount`
-
-- **Descripción**: Inicia sesión utilizando un usuario registrado con correo electrónico o teléfono.
-
-- **Cuerpo de la solicitud**:
-
-  - Ejemplo:
-
-    ```json
-    {
-      "user": "camilo",
-      "password": "1234"
-    }
-    ```
-
-### 5. Cerrar sesión
-
-- **Método**: `POST`
-- **URL**: `/v2/users/logout`
-- **Descripción**: Cierra la sesión del usuario actual, invalidando su token de sesión.
-
-### 6. Obtener la session
-
-- **Método**: `GET`
-- **URL**: `/v2/users/session-data`
-- **Descripción**: Obtiene la sesión del usuario actual, con su id y su token de sesión.
-- **Bearer:** Agregar token en el campo de Auth.
-
-### 7. Verificar la session
-
-- **Método**: `GET`
-- **URL**: `/v2/users/session-check`
-- **Descripción**: Verifica si existe una sesion en la web y envía un error si no existe.
-- **Bearer:** Agregar token en el campo de Auth.
-
-## Productos
-
-### 1. Obtener todos los productos
-
-- **Método**: `GET`
-- **URL**: `/v2/products/`
-- **Descripción**: Recupera una lista de todos los productos registrados en el sistema. Este endpoint puede paginar los resultados si se implementa la funcionalidad.
-
+```web-idl
+http://localhost:3001
+```
 
 ## Usado por:
 
